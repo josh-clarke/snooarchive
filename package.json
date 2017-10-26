@@ -1,6 +1,6 @@
 {
   "name": "SnooArchive",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A script to archive your reddit posts and comments.",
   "main": "snooarchive.js",
   "scripts": {
@@ -14,6 +14,7 @@
   "author": "Josh Clarke",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^4.0.0",
     "lodash": "^4.17.4",
     "moment": "^2.19.1",
     "snoowrap": "^1.14.2",

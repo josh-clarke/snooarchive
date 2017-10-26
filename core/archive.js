@@ -13,24 +13,29 @@ const fsSuccess = (reference, action) => {
 }
 
 const fileWrite = (file, str) => {
-  fs.writeFile(file, str, (e) => {
-    if (e === null) {
-      fsSuccess(file, 'writing')
-    } else {
-      console.log(e)
-      fsError(file, 'writing')
-    }
+  return new Promise((resolve, reject) => {
+    fs.writeFile(file, str, (e) => {
+      if (e === null) {
+        fsSuccess(file, 'writing')
+        resolve()
+      } else {
+        fsError(file, 'writing')
+        reject(e)
+      }
+    })
   })
 }
 
 const folderWrite = (dir) => {
-  fs.mkdir(dir, (e) => {
-    if (e === null) {
-      fsSuccess(dir, 'writing')
-    } else {
-      console.log(e)
-      fsError(dir, 'writing')
-    }
+  return new Promise((resolve, reject) => {
+    fs.mkdir(dir, (e) => {
+      if (e === null) {
+        fsSuccess(dir, 'writing')
+        resolve()
+      } else {
+        reject(e)
+      }
+    })
   })
 }
 
@@ -50,48 +55,63 @@ const buildArchive = (jsonArr, opts = {}) => {
 
   switch (settings.type) {
     case 'comments':
-      settings.folder = 'comments'
+      settings.folder = 'comments_' + moment().unix()
       settings.dateFormat = 'YYYY-MM-DD_HH-mm'
       settings.body = 'body'
       settings.title = 'link_title'
       break
     default:
-      settings.folder = 'submissions'
+      settings.folder = 'submissions_' + moment().unix()
       settings.dateFormat = 'YYYY-MM-DD'
       settings.body = 'selftext'
       settings.title = 'title'
   }
 
-  console.log('Building archive...', settings)
 
-  let archive = []
+  console.log('Building archive...')
+
+  let archive = {}
+  archive.posts = []
+  archive.settings = settings
+
   _.each(jsonArr, (item) => {
-    if (item.ups >= settings.ups) {
+    if (item.ups >= settings.ups && item[settings.body] !== '') {
       let post = {}
       let date = new Date(0)
       date.setUTCSeconds(item.created)
       post.date = moment(date).format(settings.dateFormat)
-      post.body = item[settings.body]
       post.title = item[settings.title].replace('\n', ' ')
-      archive.push(post)
+      if (settings.type === 'submissions') {
+        post.body = `# ${post.title}\n\n${item[settings.body]}`
+      }else{
+        post.body = item[settings.body]
+      }
+      archive.posts.push(post)
     }
   })
+
   return archive
 }
 
 const writeArchive = (archive, opts = {}) => {
   console.log('Writing archive...')
-  let folder = opts.type || 'submissions'
-  folder = folder + (opts.ups || '')
 
-  folderWrite(folder)
-  _.each(archive, (doc) => {
-    let kebab = _.kebabCase(doc.title)
-    let truncate = _.trimEnd(_.truncate(kebab, {length: 24, omission: ''}), '-')
-    let filename = `${doc.date}_${truncate}.md`
-    fileWrite(`${folder}/${filename}`, doc.body)
-  })
-  console.log('Archive writing process complete.')
+  folderWrite(archive.settings.folder)
+    .then((response) => {
+      _.each(archive.posts, (doc) => {
+        let kebab = _.kebabCase(doc.title)
+        let truncate = _.trimEnd(_.truncate(kebab, {length: 24, omission: ''}), '-')
+        let filename = `${doc.date}_${truncate}.md`
+        fileWrite(`${archive.settings.folder}/${filename}`, doc.body).catch((error) =>{
+          console.log(`Problem writing file: ${error.message}`)
+          process.exit(1)
+        })
+      })
+      console.log('Archive writing process complete.')
+    })
+    .catch((err) => {
+      console.log(err.message)
+    })
 }
 
 module.exports = {
