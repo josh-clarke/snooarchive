@@ -69,6 +69,9 @@ The features I am planning to add are:
 
 I'm happy to take a look at pull requests if anyone is inspired to contribute. 
 
+## Thanks
+
+SnooArchive would not be possible without the brilliant work of the devs who created [**snoowrap**](https://github.com/not-an-aardvark/snoowrap), the JavaScript Reddit API wrapper.
 
 ## License
 
