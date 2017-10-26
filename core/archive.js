@@ -67,7 +67,6 @@ const buildArchive = (jsonArr, opts = {}) => {
       settings.title = 'title'
   }
 
-
   console.log('Building archive...')
 
   let archive = {}
@@ -83,7 +82,7 @@ const buildArchive = (jsonArr, opts = {}) => {
       post.title = item[settings.title].replace('\n', ' ')
       if (settings.type === 'submissions') {
         post.body = `# ${post.title}\n\n${item[settings.body]}`
-      }else{
+      } else {
         post.body = item[settings.body]
       }
       archive.posts.push(post)
@@ -102,7 +101,7 @@ const writeArchive = (archive, opts = {}) => {
         let kebab = _.kebabCase(doc.title)
         let truncate = _.trimEnd(_.truncate(kebab, {length: 24, omission: ''}), '-')
         let filename = `${doc.date}_${truncate}.md`
-        fileWrite(`${archive.settings.folder}/${filename}`, doc.body).catch((error) =>{
+        fileWrite(`${archive.settings.folder}/${filename}`, doc.body).catch((error) => {
           console.log(`Problem writing file: ${error.message}`)
           process.exit(1)
         })

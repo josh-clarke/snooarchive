@@ -18,7 +18,7 @@ pids
 node_modules/
 
 # Custom App Files
-config.json
+.env
 pkg/
 comments*/
 submissions*/
