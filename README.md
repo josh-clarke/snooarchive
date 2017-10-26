@@ -1,6 +1,6 @@
 # SnooArchive
 
-SnooArchive is a Reddit submission and comment archiver that saves each item as a Markdown file in a folder.
+SnooArchive is a command-line Reddit submission and comment archiver that saves each item as a Markdown file in a folder.
 
 **Note: This is alpha software, and my first ever NodeJS project. There's always a chance you could encounter world-ending bugs. Use at your own risk.**
 
