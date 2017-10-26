@@ -20,7 +20,7 @@ This script requires [Node.JS](https://nodejs.org). I developed it on the latest
 
 1. Clone this repository
 2. On your computer, run `npm install` using the command line inside the repository folder
-3. Create a Reddit API key and setup the `config.json` file (see below)
+3. Create a Reddit API key and setup the `.env` file (see below)
 
 ### Get an API key & setup the config file
 
@@ -33,11 +33,11 @@ This script requires [Node.JS](https://nodejs.org). I developed it on the latest
 7. "About URL" can be left blank
 8. "Redirect URL" is required, but it can be anything; I used my Reddit profile URL
 9. Click "create app"
-10. In a text editor, open the `config.json.example` file
-11. Back in your browser, copy and paste the string of letters and numbers under the app name into the config file as the value for `"clientId"`
-12. Copy and paste the string of characters beside "secret" into the config file as the value for `"clientSecret"`
-13. Insert your username and password into the config file
-14. Save the file as `config.json`
+10. In a text editor, open the `.env.example` file
+11. Back in your browser, copy and paste the string of letters and numbers under the app name into the config file as the value for `CLIENT_ID`
+12. Copy and paste the string of characters beside "secret" into the config file as the value for `CLIENT_SECRET`
+13. Insert your Reddit username and password into the config file in the same way
+14. Save the file as `.env`
 
 ## Using the Script
 
