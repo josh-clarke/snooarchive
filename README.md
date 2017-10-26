@@ -14,7 +14,7 @@ Reddit itself has API limitation that does not allow more than 1000 items in a r
 
 ## Getting Started
 
-This script requires [Node.JS](https://nodejs.org). I developed it on the latest Node.JS 8+, but it should work if you have at least NodeJS LTS 6+.
+This script was developed for [NodeJS](https://nodejs.org) version 6 (LTS) or above.
 
 ### To set up the script:
 
