@@ -1,6 +1,6 @@
 {
   "name": "SnooArchive",
-  "version": "0.2.1",
+  "version": "0.2.0",
   "description": "A script to archive your reddit posts and comments.",
   "main": "snooarchive.js",
   "scripts": {
@@ -18,5 +18,6 @@
     "moment": "^2.19.1",
     "snoowrap": "^1.14.2",
     "yargs": "^10.0.3"
-  }
+  },
+  "devDependencies": {}
 }

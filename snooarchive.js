@@ -1,7 +1,7 @@
 'use strict'
 
 // Imports
-const snoowrap = require('snoowrap')
+const Snoowrap = require('snoowrap')
 const argv = require('yargs').argv
 const archive = require('./core/archive')
 
@@ -10,8 +10,8 @@ const config = './config.json'
 const creds = archive.getJsonFile(config)
 
 // Get submissions
-if(creds !== undefined) {
-  const reddit = new snoowrap(creds)
+if (creds !== undefined) {
+  const reddit = new Snoowrap(creds)
   const comments = argv.c || argv.comments
 
   // Check if it's set to true,
@@ -21,23 +21,22 @@ if(creds !== undefined) {
   let ups = argv.u || argv.upvotes
   ups = ups === true ? false : ups
 
-  if(comments === undefined) {
+  if (comments === undefined) {
     console.log('Getting submissions...')
     let processed = []
-    reddit.getMe().getSubmissions().fetchAll().then((json) =>{
+    reddit.getMe().getSubmissions().fetchAll().then((json) => {
       processed = archive.buildArchive(json, {'ups': ups})
       archive.writeArchive(processed, {'ups': ups})
     })
-  }
-  else {
+  } else {
     console.log(`Getting comments...`)
     let processed = []
-    reddit.getMe().getComments().fetchAll().then((json) =>{
-      processed = archive.buildArchive(json, {'type':'comments','ups': ups})
-      archive.writeArchive(processed, {'type': 'comments','ups':ups})
+    reddit.getMe().getComments().fetchAll().then((json) => {
+      processed = archive.buildArchive(json, {'type': 'comments', 'ups': ups})
+      archive.writeArchive(processed, {'type': 'comments', 'ups': ups})
     })
   }
-}else{
+} else {
   console.log('There was an error loading the config.json file.')
   console.log('Did you create it?')
 }

@@ -12,27 +12,24 @@ const fsSuccess = (reference, action) => {
   console.log(`Success in ${action} ${reference}`)
 }
 
-
-const fileWrite = (file,str) => {
-  fs.writeFile(file,str,(e) => {
-    if(e === null ) {
-      fsSuccess(file,'writing')
-    }
-    else{
+const fileWrite = (file, str) => {
+  fs.writeFile(file, str, (e) => {
+    if (e === null) {
+      fsSuccess(file, 'writing')
+    } else {
       console.log(e)
-      fsError(file,'writing')
+      fsError(file, 'writing')
     }
   })
 }
 
 const folderWrite = (dir) => {
-  fs.mkdir(dir,(e) => {
-    if(e === null ) {
-      fsSuccess(dir,'writing')
-    }
-    else{
+  fs.mkdir(dir, (e) => {
+    if (e === null) {
+      fsSuccess(dir, 'writing')
+    } else {
       console.log(e)
-      fsError(dir,'writing')
+      fsError(dir, 'writing')
     }
   })
 }
@@ -41,24 +38,23 @@ const getJsonFile = (file) => {
   try {
     let jsonString = fs.readFileSync(file)
     return JSON.parse(jsonString)
-  }
-  catch(e){
-    fsError(file,'reading')
+  } catch (e) {
+    fsError(file, 'reading')
   }
 }
 
 const buildArchive = (jsonArr, opts = {}) => {
   let settings = {}
   settings.type = opts.type || 'submissions'
-  settings.ups  = opts.ups || 1
+  settings.ups = opts.ups || 1
 
-  switch(settings.type) {    
+  switch (settings.type) {
     case 'comments':
       settings.folder = 'comments'
       settings.dateFormat = 'YYYY-MM-DD_HH-mm'
       settings.body = 'body'
       settings.title = 'link_title'
-      break;
+      break
     default:
       settings.folder = 'submissions'
       settings.dateFormat = 'YYYY-MM-DD'
@@ -70,10 +66,10 @@ const buildArchive = (jsonArr, opts = {}) => {
 
   let archive = []
   _.each(jsonArr, (item) => {
-    if( item.ups >= settings.ups) {
+    if (item.ups >= settings.ups) {
       let post = {}
       let date = new Date(0)
-      date.setUTCSeconds(item.created)    
+      date.setUTCSeconds(item.created)
       post.date = moment(date).format(settings.dateFormat)
       post.body = item[settings.body]
       post.title = item[settings.title].replace('\n', ' ')
@@ -87,13 +83,13 @@ const writeArchive = (archive, opts = {}) => {
   console.log('Writing archive...')
   let folder = opts.type || 'submissions'
   folder = folder + (opts.ups || '')
-  
-  folderWrite(folder)  
+
+  folderWrite(folder)
   _.each(archive, (doc) => {
     let kebab = _.kebabCase(doc.title)
-    let truncate = _.trimEnd(_.truncate(kebab, {length:24,omission:''}),'-')
+    let truncate = _.trimEnd(_.truncate(kebab, {length: 24, omission: ''}), '-')
     let filename = `${doc.date}_${truncate}.md`
-    fileWrite(`${folder}/${filename}`,doc.body)
+    fileWrite(`${folder}/${filename}`, doc.body)
   })
   console.log('Archive writing process complete.')
 }

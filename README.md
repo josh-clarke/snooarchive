@@ -1,6 +1,6 @@
 # SnooArchive
 
-SnooArchive is a Reddit submission and comment archiver that saves each item as a Markdown file in a folder. 
+SnooArchive is a Reddit submission and comment archiver that saves each item as a Markdown file in a folder.
 
 **Note: This is alpha software, and my first ever NodeJS project. There's always a chance you could encounter world-ending bugs. Use at your own risk.**
 
@@ -24,7 +24,7 @@ This script requires [Node.JS](https://nodejs.org). I developed it on the latest
 
 ### Get an API key & setup the config file
 
-1. Log into your Reddit account 
+1. Log into your Reddit account
 2. Navigate to https://ssl.reddit.com/prefs/apps/
 3. Scroll to the bottom and click "create an app.."
 4. In the form, name it "SnooArchive"
@@ -80,7 +80,7 @@ The features I am planning to add are:
 
 ## Contributions
 
-I'm happy to take a look at pull requests if anyone is inspired to contribute. 
+I'm happy to take a look at pull requests if anyone is inspired to contribute.
 
 ## Thanks
 
@@ -89,3 +89,5 @@ SnooArchive would not be possible without the brilliant work of the devs who cre
 ## License
 
 I'm releasing this under the [ISC License](https://en.wikipedia.org/wiki/ISC_license) which is fully MIT/BSD/GPL compatible with even fewer words.
+
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
