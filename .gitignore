@@ -1,0 +1,24 @@
+# OS
+*DS_Store*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependencies
+node_modules/
+
+# Custom App Files
+config.json
+comments*/
+submissions*/
+saved*/
