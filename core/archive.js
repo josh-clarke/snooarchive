@@ -37,65 +37,71 @@ const folderWrite = (dir) => {
   })
 }
 
-const getCreds = (config) => {
+const getJsonFile = (file) => {
   try {
-    let credString = fs.readFileSync(config)
-    return JSON.parse(credString)
+    let jsonString = fs.readFileSync(file)
+    return JSON.parse(jsonString)
   }
   catch(e){
-    fsError(config,'reading')
+    fsError(file,'reading')
   }
 }
 
-const buildArchive = (jsonArr) => {
-  console.log('Building archive...')
-  let archive = []
-  _.each(jsonArr, (obj) => {
-    let post = {}
-    let date = new Date(0)
-    date.setUTCSeconds(obj.created)    
-    post.date = moment(date).format('YYYY-MM-DD')
-    post.body = obj.selftext
-    post.title = obj.title.replace('\n', ' ')
-    archive.push(post)
-  })
-  return archive
-}
+const buildArchive = (jsonArr, opts = {}) => {
+  let settings = {}
+  settings.type = opts.type || 'submissions'
+  settings.ups  = opts.ups || 1
 
-const writeArchive = (archive, folder = 'submissions') => {
-  console.log('Writing archive...')
-  folderWrite(folder)  
-  _.each(archive, (doc) => {
-    let kebab = _.kebabCase(doc.title)
-    let truncate = _.truncate(kebab, {length:24,omission:''})
-    let filename = doc.date + '_' + _.trimEnd(truncate,'-') + '.md'
-    fileWrite(`${folder}/${filename}`,doc.body)
-  })
-  console.log('Archive writing process complete.')
-}
+  switch(settings.type) {    
+    case 'comments':
+      settings.folder = 'comments'
+      settings.dateFormat = 'YYYY-MM-DD_HH-mm'
+      settings.body = 'body'
+      settings.title = 'link_title'
+      break;
+    default:
+      settings.folder = 'submissions'
+      settings.dateFormat = 'YYYY-MM-DD'
+      settings.body = 'selftext'
+      settings.title = 'title'
+  }
 
-const buildArchiveComments = (jsonArr, ups = 10) => {
-  console.log('Building comments archive...')
+  console.log('Building archive...', settings)
+
   let archive = []
-  _.each(jsonArr, (obj) => {
-    if( obj.ups >= ups) {
+  _.each(jsonArr, (item) => {
+    if( item.ups >= settings.ups) {
       let post = {}
       let date = new Date(0)
-      date.setUTCSeconds(obj.created)    
-      post.date = moment(date).format('YYYY-MM-DD_HH:mm_')
-      post.body = obj.body
-      post.title = obj.link_title.replace('\n', ' ')
+      date.setUTCSeconds(item.created)    
+      post.date = moment(date).format(settings.dateFormat)
+      post.body = item[settings.body]
+      post.title = item[settings.title].replace('\n', ' ')
       archive.push(post)
     }
   })
   return archive
 }
 
+const writeArchive = (archive, opts = {}) => {
+  console.log('Writing archive...')
+  let folder = opts.type || 'submissions'
+  folder = folder + (opts.ups || '')
+  
+  folderWrite(folder)  
+  _.each(archive, (doc) => {
+    let kebab = _.kebabCase(doc.title)
+    let truncate = _.trimEnd(_.truncate(kebab, {length:24,omission:''}),'-')
+    let filename = `${doc.date}_${truncate}.md`
+    fileWrite(`${folder}/${filename}`,doc.body)
+  })
+  console.log('Archive writing process complete.')
+}
+
 module.exports = {
   fsError,
   fileWrite,
-  getCreds,
+  getJsonFile,
   buildArchive,
-  buildArchiveComments,
   writeArchive
 }
