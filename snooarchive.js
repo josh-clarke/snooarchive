@@ -13,12 +13,12 @@ const creds = archive.getJsonFile(config)
 if(creds !== undefined) {
   const reddit = new snoowrap(creds)
   const comments = argv.c || argv.comments
-  const ups = argv.u || argv.upvotes
-  
-  // Check if it's set to true, 
+
+  // Check if it's set to true,
   // which indicates a flag without a number.
   // Set it to false if so.
 
+  let ups = argv.u || argv.upvotes
   ups = ups === true ? false : ups
 
   if(comments === undefined) {
