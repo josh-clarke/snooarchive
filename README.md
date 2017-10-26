@@ -42,6 +42,7 @@ This script requires [Node.JS](https://nodejs.org). I developed it on the latest
 ## Using the Script
 
 **Archiving Your Submissions**
+
 The script's default action is to collect all of your submissions (to the Reddit limit of 1000) and save them in a folder called `./submissions`.
 
 ```bash
@@ -49,6 +50,7 @@ node snooarchive.js
 ```
 
 **Archiving Your Comments**
+
 To download comments, use the `-c` or `--comments` flag. Comments will download into a directory called `./comments`
 
 ```bash
