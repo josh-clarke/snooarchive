@@ -57,12 +57,25 @@ To download comments, use the `-c` or `--comments` flag. Comments will download 
 node snooarchive.js -c
 ```
 
+**Filter by Minimum Upvote**
+
+Especially with comments, sometimes the content isn't very valuable. To filter by upvotes, add use the `-u` or `--upvotes` flag followed by a number.
+
+**Submissions**
+```bash
+node snooarchive.js -u 10
+```
+
+**Comments**
+```bash
+node snooarchive.js -c -u 10
+```
+
 ## Roadmap
 
 The features I am planning to add are:
 
 * Ability to download saved posts
-* Ability to filter submissions, comments, and saved posts by a minimum upvote level (i.e., only get the good stuff)
 
 
 ## Contributions
