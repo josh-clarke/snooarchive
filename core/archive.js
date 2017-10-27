@@ -14,21 +14,9 @@ const getSettings = (type, ups) => {
   const settings = {}
   settings.type = type || 'submissions'
   settings.ups = ups || 1
-
-  switch (settings.type) {
-    case 'comments':
-      settings.folder = `comments${settings.ups === 1 ? '' : '-' + settings.ups}_${moment().unix()}`
-      settings.dateFormat = 'YYYY-MM-DD_HH-mm'
-      settings.body = 'body'
-      settings.title = 'link_title'
-      break
-    default:
-      settings.folder = `submissions${settings.ups === 1 ? '' : '-' + settings.ups}_${moment().unix()}`
-      settings.dateFormat = 'YYYY-MM-DD'
-      settings.body = 'selftext'
-      settings.title = 'title'
-  }
-
+  settings.folder = `${type}${settings.ups === 1 ? '' : '-' + settings.ups}_${moment().unix()}`
+  settings.dateFormat = 'YYYY-MM-DD'
+  settings.timeFormat = 'HH-mm'
   return settings
 }
 
@@ -45,19 +33,19 @@ const buildArchive = (jsonArr, settings) => {
   archive.posts = []
   archive.settings = settings
 
-  _.each(jsonArr, (item) => {
-    if (item.ups >= settings.ups && item[settings.body] !== '') {
-      let post = {}
-      let date = new Date(0)
-      date.setUTCSeconds(item.created)
-      post.date = moment(date).format(settings.dateFormat)
-      post.title = item[settings.title].replace('\n', ' ')
-      if (settings.type === 'submissions') {
-        post.body = `# ${post.title}\n\n${item[settings.body]}`
-      } else {
-        post.body = `# Comment on ${post.title} on ${moment(date).format('DD MMM YYYY')} at ${moment(date).format('HH:MM')}\n\n${item[settings.body]}`
+  jsonArr.forEach((item) => {
+    if (item.ups >= settings.ups) {
+      const body = _bodyBuilder(item, settings)
+      if (!body.empty) {
+        const post = {}
+        const date = new Date(0)
+        date.setUTCSeconds(item.created)
+        post.date = moment(date).format(settings.dateFormat)
+        post.time = moment(date).format(settings.timeFormat)
+        post.title = body.titleStr
+        post.body = body.bodyStr
+        archive.posts.push(post)
       }
-      archive.posts.push(post)
     }
   })
 
@@ -73,10 +61,11 @@ const writeArchive = (archive) => {
 
   rw.folderWrite(archive.settings.folder)
     .then((response) => {
-      _.each(archive.posts, (doc) => {
-        let kebab = _.kebabCase(doc.title)
-        let truncate = _.trimEnd(_.truncate(kebab, {length: 24, omission: ''}), '-')
-        let filename = `${doc.date}_${truncate}.md`
+      archive.posts.forEach((doc) => {
+        const kebab = _.kebabCase(doc.title)
+        const truncate = _.trimEnd(_.truncate(kebab, {length: 24, omission: ''}), '-')
+        const filenameTmp = `${doc.date}_${truncate}`
+        const filename = archive.settings.type === 'submissions' ? filenameTmp + '.md' : `${filenameTmp}_${doc.time}.md`
         rw.fileWrite(`${archive.settings.folder}/${filename}`, doc.body).catch((error) => {
           console.log(`Problem writing file: ${error.message}`)
           process.exit(1)
@@ -87,6 +76,40 @@ const writeArchive = (archive) => {
     .catch((err) => {
       console.log(err.message)
     })
+}
+
+/**
+ * Comments and self.posts in Reddit store the title and content body in
+ * different keys. This method determines the location of the title
+ * and body from the entry object passed to it.
+ * @private
+ * @param {Object} item Item object from the JSON array
+ * @param {Object} settings Settings for the processed archive
+ * @returns {Object} Body and title locations and formatted strings
+ */
+const _bodyBuilder = (item) => {
+  const body = {}
+  body.bodySrc = item.body ? 'body' : 'selftext'
+  body.titleSrc = item.link_title ? 'link_title' : 'title'
+  body.empty = false
+
+  if (item[body.bodySrc] !== '') {
+    const date = new Date(0)
+    date.setUTCSeconds(item.created)
+    body.titleStr = item[body.titleSrc].replace('\n', '')
+    switch (body.bodySrc) {
+      case 'selftext':
+        body.bodyStr = `# ${body.titleStr}\n\n${item[body.bodySrc]}`
+        break
+      case 'body':
+        body.bodyStr = `# Comment on "${body.titleStr}" on ${moment(date).format('DD MMM YYYY')} at ${moment(date).format('HH:MM')}\n\n${item[body.bodySrc]}`
+        break
+    }
+  } else {
+    body.empty = true
+  }
+
+  return body
 }
 
 module.exports = {

@@ -21,7 +21,8 @@ const reddit = new Snoowrap({
 // Process command-line arguments
 const comments = argv.c || argv.comments
 const savejson = argv.savejson
-const type = comments ? 'comments' : 'submissions'
+const saved = argv.s || argv.saved
+const type = comments ? 'comments' : (saved ? 'saved' : 'submissions')
 
 // -u or --upvotes with no number returns true
 // set it to false make it fail condition checks
@@ -39,20 +40,23 @@ const archiveProcess = () => {
     archive.writeArchive(processed)
   }
 
-  if (type === 'comments') {
-    reddit.getMe().getComments().fetchAll().then(doArchive)
-  } else {
-    reddit.getMe().getSubmissions().fetchAll().then(doArchive)
+  switch (type) {
+    case 'comments':
+      reddit.getMe().getComments().fetchAll().then(doArchive)
+      break
+    case 'saved':
+      reddit.getMe().getSavedContent().fetchAll().then(doArchive)
+      break
+    default:
+      reddit.getMe().getSubmissions().fetchAll().then(doArchive)
   }
 }
 
 // Undocumented feature to save a copy of the JSON response
 const saveJson = () => {
   console.log(`Getting ${type} as JSON...`)
-  const user = reddit.getMe()
-  const list = comments ? user.getComments().fetchAll() : user.getSubmissions.fetchAll()
 
-  list.then((json) => {
+  const doSaveJson = (json) => {
     const jsonStr = JSON.stringify(json)
     const file = `${type}.json`
     rw.fileWrite(file, jsonStr)
@@ -62,7 +66,18 @@ const saveJson = () => {
       .catch((e) => {
         console.log(`There was a problem writing ${file} to disk.`)
       })
-  })
+  }
+
+  switch (type) {
+    case 'comments':
+      reddit.getMe().getComments().fetchAll().then(doSaveJson)
+      break
+    case 'saved':
+      reddit.getMe().getSavedContent().fetchAll().then(doSaveJson)
+      break
+    default:
+      reddit.getMe().getSubmissions().fetchAll().then(doSaveJson)
+  }
 }
 
 // Go to main process or save json to disk

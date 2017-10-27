@@ -2,6 +2,8 @@
 
 SnooArchive is a command-line Reddit submission and comment archiver that saves each item as a Markdown file in a folder.
 
+_This script *only* saves text posts. It does not save offsite links or links to image galleries._
+
 **Note: This is alpha software, and my first ever NodeJS project. There's always a chance you could encounter world-ending bugs. Use at your own risk.**
 
 I created this because I have a few Reddit accounts with posts that I wanted to keep in an archive. Most of the scripts that I found would save these in a big HTML file. What I wanted instead were Markdown documents that I could easily import into one of my Markdown apps like iAWriter or Ulysses, or convert to a variety of other formats with Pandoc.
@@ -62,6 +64,14 @@ To download comments, use the `-c` or `--comments` flag. Comments will download 
 node snooarchive.js -c
 ```
 
+### Archiving Your Saved Items
+
+To download comments, use the `-s` or `--saved` flag. Saved items will download into a directory called `./saved` followed by a unique set of numbers.
+
+```bash
+node snooarchive.js -s
+```
+
 ### Filter by Minimum Upvote
 
 Especially with comments, sometimes the content isn't very valuable. To filter by upvotes, add use the `-u` or `--upvotes` flag followed by a number. This will add a `-n` between the folder name and unique set of numbers, where 'n' is the minimum upvotes specified.
@@ -76,16 +86,14 @@ node snooarchive.js -u 10
 node snooarchive.js -c -u 10
 ```
 
-## Roadmap
-
-The features I am planning to add are:
-
-* Ability to download saved posts
-
+**Saved**
+```bash
+node snooarchive.js -s -u 10
+```
 
 ## Contributions
 
-I'm happy to take a look at pull requests if anyone is inspired to contribute.
+Let me know if you'd like to see a feature in the "issues" section of this repo. I'm also happy to take a look at pull requests if anyone is inspired to contribute.
 
 ## Thanks
 

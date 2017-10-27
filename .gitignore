@@ -23,3 +23,6 @@ pkg/
 comments*/
 submissions*/
 saved*/
+comments.json
+submissions.json
+saved.json
