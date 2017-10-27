@@ -5,15 +5,15 @@ const moment = require('moment')
 const rw = require('./readwrite')
 
 /**
- * Builds the archive JSON object in memory from the Reddit API result
- * @param {Array} file Name of the file to be written
- * @param {Object} [opts={}] Optional settings 'type'='submissions' and 'ups'=1
- * @returns {Object} Object package for use with writeArchive()
+ * Returns an object of settings for use with buildArchive()
+ * @param {String} type Type of archive to create
+ * @param {number} ups Minimum upvote to filter by
+ * @returns {Object} Object of archive settings
  */
-const buildArchive = (jsonArr, opts = {}) => {
-  let settings = {}
-  settings.type = opts.type || 'submissions'
-  settings.ups = opts.ups || 1
+const getSettings = (type, ups) => {
+  const settings = {}
+  settings.type = type || 'submissions'
+  settings.ups = ups || 1
 
   switch (settings.type) {
     case 'comments':
@@ -29,6 +29,16 @@ const buildArchive = (jsonArr, opts = {}) => {
       settings.title = 'title'
   }
 
+  return settings
+}
+
+/**
+ * Builds the archive JSON object in memory from the Reddit API result
+ * @param {Array} file Name of the file to be written
+ * @param {Object} settings Settings for the processed archive
+ * @returns {Object} Archive package for use with writeArchive()
+ */
+const buildArchive = (jsonArr, settings) => {
   console.log('Building archive...')
 
   let archive = {}
@@ -45,7 +55,7 @@ const buildArchive = (jsonArr, opts = {}) => {
       if (settings.type === 'submissions') {
         post.body = `# ${post.title}\n\n${item[settings.body]}`
       } else {
-        post.body = item[settings.body]
+        post.body = `# Comment on ${post.title} on ${moment(date).format('DD MMM YYYY')} at ${moment(date).format('HH:MM')}\n\n${item[settings.body]}`
       }
       archive.posts.push(post)
     }
@@ -80,6 +90,7 @@ const writeArchive = (archive) => {
 }
 
 module.exports = {
+  getSettings,
   buildArchive,
   writeArchive
 }
