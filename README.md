@@ -22,28 +22,33 @@ This script was developed for [NodeJS](https://nodejs.org) version 6 (LTS) or ab
 2. On your computer, run `npm install` using the command line inside the repository folder
 3. Create a Reddit API key and setup the `.env` file (see below)
 
-### Get an API key & setup the config file
+### Get a Reddit API key
 
 1. Log into your Reddit account
 2. Navigate to https://ssl.reddit.com/prefs/apps/
 3. Scroll to the bottom and click "create an app.."
 4. In the form, name it "SnooArchive"
 5. Select "script" as the application type
-6. "Description" can be left blank
-7. "About URL" can be left blank
-8. "Redirect URL" is required, but it can be anything; I used my Reddit profile URL
+6. You can safely ignore 'description' and 'about url'
+8. 'Redirect url' is required, but it can be anything—I used my Reddit profile URL
 9. Click "create app"
-10. In a text editor, open the `.env.example` file
-11. Back in your browser, copy and paste the string of letters and numbers under the app name into the config file as the value for `CLIENT_ID`
-12. Copy and paste the string of characters beside "secret" into the config file as the value for `CLIENT_SECRET`
-13. Insert your Reddit username and password into the config file in the same way
-14. Save the file as `.env`
+
+Note the string of characters below the app name. This is your `CLIENT_ID`
+Note the string of characters beside the word "secret". This is your `CLIENT_SECRET`
+
+### Setup the .env file
+
+1. In a text editor, open the `.env.example` file
+2. As noted above, copy and paste in the value for `CLIENT_ID`
+3. Copy and paste in the value for `CLIENT_SECRET`
+4. Insert your Reddit username and password
+5. Save the file as `.env` in the same directory
 
 ## Using the Script
 
 ### Archiving Your Submissions
 
-The script's default action is to collect all of your submissions (to the Reddit limit of 1000) and save them in a folder called `./submissions`.
+The script's default action is to collect all of your submissions (to the Reddit limit of 1000) and save them in a folder called `./submissions` with a unique numerical indicator.
 
 ```bash
 node snooarchive.js
@@ -51,7 +56,7 @@ node snooarchive.js
 
 ### Archiving Your Comments
 
-To download comments, use the `-c` or `--comments` flag. Comments will download into a directory called `./comments`
+To download comments, use the `-c` or `--comments` flag. Comments will download into a directory called `./comments` followed by a unique set of numbers.
 
 ```bash
 node snooarchive.js -c
@@ -59,7 +64,7 @@ node snooarchive.js -c
 
 ### Filter by Minimum Upvote
 
-Especially with comments, sometimes the content isn't very valuable. To filter by upvotes, add use the `-u` or `--upvotes` flag followed by a number.
+Especially with comments, sometimes the content isn't very valuable. To filter by upvotes, add use the `-u` or `--upvotes` flag followed by a number. This will add a `-n` between the folder name and unique set of numbers, where 'n' is the minimum upvotes specified.
 
 **Submissions**
 ```bash
