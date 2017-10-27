@@ -33,8 +33,8 @@ This script was developed for [NodeJS](https://nodejs.org) version 6 (LTS) or ab
 8. 'Redirect url' is required, but it can be anything—I used my Reddit profile URL
 9. Click "create app"
 
-Note the string of characters below the app name. This is your `CLIENT_ID`
-Note the string of characters beside the word "secret". This is your `CLIENT_SECRET`
+Note the string of characters below the app name. This is your `CLIENT_ID`.
+Note the string of characters beside the word "secret". This is your `CLIENT_SECRET`.
 
 ### Setup the .env file
 
