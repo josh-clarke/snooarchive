@@ -41,6 +41,6 @@ if (comments === undefined) {
   let processed = []
   reddit.getMe().getComments().fetchAll().then((json) => {
     processed = archive.buildArchive(json, {'type': 'comments', 'ups': ups})
-    archive.writeArchive(processed, {'type': 'comments', 'ups': ups})
+    archive.writeArchive(processed)
   })
 }
