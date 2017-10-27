@@ -48,7 +48,7 @@ Note the string of characters beside the word "secret". This is your `CLIENT_SEC
 
 ### Archiving Your Submissions
 
-The script's default action is to collect all of your submissions (to the Reddit limit of 1000) and save them in a folder called `./submissions` with a unique numerical indicator.
+The script's default action is to collect all of your submissions (to the Reddit limit of 1000) and save them in a folder called `./submissions` with a unique set of numbers.
 
 ```bash
 node snooarchive.js
