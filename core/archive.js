@@ -39,15 +39,6 @@ const folderWrite = (dir) => {
   })
 }
 
-const getJsonFile = (file) => {
-  try {
-    let jsonString = fs.readFileSync(file)
-    return JSON.parse(jsonString)
-  } catch (e) {
-    fsError(file, 'reading')
-  }
-}
-
 const buildArchive = (jsonArr, opts = {}) => {
   let settings = {}
   settings.type = opts.type || 'submissions'
@@ -116,7 +107,6 @@ const writeArchive = (archive, opts = {}) => {
 module.exports = {
   fsError,
   fileWrite,
-  getJsonFile,
   buildArchive,
   writeArchive
 }
