@@ -66,7 +66,7 @@ node snooarchive.js -c
 
 ### Archiving Your Saved Items
 
-To download comments, use the `-s` or `--saved` flag. Saved items will download into a directory called `./saved` followed by a unique set of numbers.
+To download saved items, use the `-s` or `--saved` flag. Saved items will download into a directory called `./saved` followed by a unique set of numbers.
 
 ```bash
 node snooarchive.js -s
