@@ -17,18 +17,14 @@ const reddit = new Snoowrap({
   'password': process.env.REDDIT_PASSWORD
 })
 
-/**
- * Process command-line arguments
- */
+// Process command-line arguments
 const comments = argv.c || argv.comments
 let ups = argv.u || argv.upvotes
 // -u or --upvotes with no number returns true
 // set it to false make it fail condition checks
 ups = ups === true ? false : ups
 
-/**
- * Execute steps
- */
+// Determine content type, call reddit API and process
 if (comments === undefined) {
   console.log('Getting submissions...')
   let processed = []
