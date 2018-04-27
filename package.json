@@ -1,6 +1,6 @@
 {
   "name": "SnooArchive",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A script to archive your reddit posts and comments.",
   "main": "snooarchive.js",
   "repository": "https://github.com/josh-clarke/snooarchive",

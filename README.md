@@ -40,7 +40,7 @@ Note the string of characters beside the word "secret". This is your `CLIENT_SEC
 
 ### Setup the .env file
 
-1. In a text editor, open the `.env.example` file
+1. In a text editor, open the `env.example` file
 2. As noted above, copy and paste in the value for `CLIENT_ID`
 3. Copy and paste in the value for `CLIENT_SECRET`
 4. Insert your Reddit username and password
