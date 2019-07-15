@@ -2,12 +2,9 @@
 
 const Snoowrap = require('snoowrap')
 const argv = require('yargs').argv
-const dotenv = require('dotenv')
+const dotenv = require('dotenv').config({path: '.env'})
 const archive = require('./core/archive')
 const rw = require('./core/readwrite.js')
-
-// Load enviornment variables where credentials are kept
-dotenv.load({path: '.env'})
 
 // Configure reddit API
 const reddit = new Snoowrap({
