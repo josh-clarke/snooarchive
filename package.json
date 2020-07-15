@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.0.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "moment": "^2.19.1",
     "snoowrap": "^1.14.2",
     "yargs": "^13.0.0"
