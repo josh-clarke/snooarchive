@@ -1,8 +1,10 @@
 'use strict'
 
-const _ = require('lodash')
-const moment = require('moment')
-const rw = require('./readwrite')
+import _ from 'lodash'
+import moment from 'moment'
+import { fsSuccess, fsError, fileWrite, folderWrite } from './readwrite.js'
+
+const rw = { fsSuccess, fsError, fileWrite, folderWrite }
 
 /**
  * Returns an object of settings for use with buildArchive()
@@ -112,7 +114,7 @@ const _bodyBuilder = (item) => {
   return body
 }
 
-module.exports = {
+export {
   getSettings,
   buildArchive,
   writeArchive

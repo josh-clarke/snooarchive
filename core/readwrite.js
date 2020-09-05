@@ -1,6 +1,6 @@
 'use strict'
 
-const fs = require('fs')
+import fs from 'fs'
 
 /**
  * Prints a filesystem success message to the console.
@@ -58,7 +58,7 @@ const folderWrite = (dir) => {
   })
 }
 
-module.exports = {
+export {
   fsError,
   fsSuccess,
   fileWrite,
