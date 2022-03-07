@@ -1,12 +1,13 @@
 {
   "name": "SnooArchive",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "A script to archive your reddit posts and comments.",
   "main": "snooarchive.js",
   "repository": "https://github.com/josh-clarke/snooarchive",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "keywords": [
     "reddit",
     "archive",
@@ -15,11 +16,11 @@
   "author": "Josh Clarke",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^8.0.0",
+    "dotenv": "^16.0.0",
     "lodash": "^4.17.19",
     "moment": "^2.19.1",
     "snoowrap": "^1.14.2",
-    "yargs": "^13.0.0"
+    "yargs": "^17.3.1"
   },
   "devDependencies": {}
 }

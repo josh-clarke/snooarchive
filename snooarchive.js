@@ -1,10 +1,14 @@
 'use strict'
 
-const Snoowrap = require('snoowrap')
-const argv = require('yargs').argv
-const dotenv = require('dotenv').config({path: '.env'})
-const archive = require('./core/archive')
-const rw = require('./core/readwrite.js')
+import Snoowrap from 'snoowrap'
+import argv from 'yargs'
+import denv from 'dotenv'
+import { buildArchive, writeArchive, getSettings } from './core/archive.js'
+import { fsSuccess, fsError, fileWrite, folderWrite } from './core/readwrite.js'
+
+const dotenv = denv.config({path: '.env'})
+const archive = { buildArchive, writeArchive, getSettings }
+const rw = { fsSuccess, fsError, fileWrite, folderWrite }
 
 // Configure reddit API
 const reddit = new Snoowrap({
